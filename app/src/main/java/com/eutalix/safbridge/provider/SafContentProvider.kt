@@ -60,13 +60,35 @@ class SafContentProvider : ContentProvider() {
         return ALLOWED_WRITE_PACKAGES.contains(callingPkg)
     }
 
+    // --- DEBUG HELPER ---
+    private fun showDebugToast(message: String) {
+        android.os.Handler(android.os.Looper.getMainLooper()).post {
+            android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
+        }
+    }
+    // --------------------
+
     override fun query(uri: Uri, projection: Array<out String>?, selection: String?, selectionArgs: Array<out String>?, sortOrder: String?): Cursor? {
         val context = context ?: return null
+
+        // --- DEBUG INJECTION ---
+        if (selection == "get=accounts") {
+            showDebugToast("DEBUG: ZArchiver requested folder list.")
+        }
+        // -----------------------
 
         // 1. Handshake: List "Accounts" (Roots)
         if (selection == "get=accounts") {
             val cursor = MatrixCursor(COL_ACCOUNTS)
             val prefs = context.getSharedPreferences("accounts", Context.MODE_PRIVATE)
+            
+            // --- DEBUG INJECTION ---
+            val count = prefs.all.size
+            if (count == 0) {
+                showDebugToast("DEBUG WARNING: No folders found in 'accounts' prefs!")
+            }
+            // -----------------------
+
             prefs.all.forEach { (uriString, name) ->
                 // _id is the SAF Tree URI string itself
                 cursor.addRow(arrayOf(name.toString(), uriString, 0))
@@ -146,7 +168,7 @@ class SafContentProvider : ContentProvider() {
                             val parentPath = if (logicalPath.lastIndexOf('/') > 0) logicalPath.substring(0, logicalPath.lastIndexOf('/')) else "/"
                             val parent = findDocByPath(context, rootUri, parentPath)
                             
-                            // FIX: SAF rename fails if destination exists. ZArchiver expects overwrite.
+                            // LOGIC: SAF rename fails if destination exists. ZArchiver expects overwrite.
                             // We must manually find and delete the collision first.
                             val collision = parent?.findFile(newName)
                             if (collision != null && collision.uri != source.uri) collision.delete()

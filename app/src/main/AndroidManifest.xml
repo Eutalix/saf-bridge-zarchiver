@@ -19,9 +19,7 @@
             </intent-filter>
             
             <!-- 
-                CRITICAL: This specific Action is required for ZArchiver 
-                to detect this app as a valid Cloud/External Plugin.
-                Do NOT change "ru.zdevs.zarchiver.plugin.PLUGIN_APPLICATION".
+                This action allows ZArchiver to discover the plugin.
             -->
             <intent-filter>
                 <action android:name="ru.zdevs.zarchiver.plugin.PLUGIN_APPLICATION" />
@@ -29,18 +27,17 @@
             </intent-filter>
         </activity>
 
-        <!--
-            ContentProvider to be called by ZArchiver.
-            'authority' must match applicationId.
-            'grantUriPermissions=true' is required to pass file access.
+        <!-- 
+            1. name: Points to '.provider.SafContentProvider' (new package).
+            2. authorities: Uses ${applicationId} to match 'com.eutalix.safbridge'.
+            3. permission: REMOVED. We must NOT require permissions, otherwise 
+               ZArchiver cannot query us.
         -->
         <provider
             android:name=".provider.SafContentProvider"
             android:authorities="${applicationId}"
             android:exported="true"
-            android:grantUriPermissions="true"
-            android:permission="android.permission.MANAGE_DOCUMENTS">
-        </provider>
+            android:grantUriPermissions="true" />
 
     </application>
 </manifest>

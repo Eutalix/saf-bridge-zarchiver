@@ -26,7 +26,10 @@ jobs:
           ENCODED_STRING: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
           echo $ENCODED_STRING | base64 -di > app/keystore.jks
-
+      
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      
       - name: Build Release APK
         env:
           KEYSTORE_FILE: "keystore.jks"

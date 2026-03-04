@@ -3,7 +3,7 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=android&logoColor=white)
-![Release Workflow](https://github.com/Eutalix/saf-bridge-zarchiver/actions/workflows/release.yml/badge.svg?style=for-the-badge&logo=github)
+![Release Workflow](https://img.shields.io/github/actions/workflow/status/Eutalix/saf-bridge-zarchiver/android-release.yml?style=for-the-badge&logo=github&logoColor=white)
 ![Downloads](https://img.shields.io/github/downloads/Eutalix/saf-bridge-zarchiver/total?label=Downloads&logo=github&style=for-the-badge)
 
 A bridge application that connects Android's **Storage Access Framework (SAF)** to **ZArchiver**.
